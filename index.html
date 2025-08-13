@@ -1,140 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fintech COO SaaS Platform</title>
-    <link href="https://fonts.googleapis.com/css?family=Inter:400,600&display=swap" rel="stylesheet">
+    <title>오늘의 운세</title>
     <style>
-        body {
-            font-family: 'Inter', Arial, sans-serif;
-            margin: 0;
-            background: #f8fafc;
-            color: #22223b;
-        }
-        header {
-            background: #2d3142;
-            color: #fff;
-            padding: 2rem 0;
-            text-align: center;
-        }
-        nav {
-            margin-top: 1rem;
-        }
-        nav a {
-            color: #fff;
-            margin: 0 1rem;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .hero {
-            padding: 4rem 1rem 2rem 1rem;
-            text-align: center;
-            background: #fff;
-        }
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        .hero p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            color: #4f5d75;
-        }
-        .cta-btn {
-            background: #ef8354;
-            color: #fff;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .cta-btn:hover {
-            background: #d76d3c;
-        }
-        .features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            padding: 3rem 1rem;
-            background: #f1f3f8;
-        }
-        .feature-card {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
-            padding: 2rem;
-            max-width: 320px;
-            text-align: left;
-        }
-        .feature-card h3 {
-            margin-top: 0;
-            color: #2d3142;
-        }
-        .feature-card p {
-            color: #4f5d75;
-        }
-        footer {
-            text-align: center;
-            padding: 2rem 1rem;
-            background: #2d3142;
-            color: #fff;
-        }
-        @media (max-width: 900px) {
-            .features {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
+        body { font-family: Arial; max-width: 600px; margin: 50px auto; }
+        .fortune-card { background: #f0f0f0; padding: 20px; margin: 10px 0; border-radius: 10px; }
+        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>FinCOO</h1>
-        <nav>
-            <a href="#features">Features</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-            <a href="#signup" class="cta-btn" style="margin-left:2rem;">Get Started</a>
-        </nav>
-    </header>
-    <section class="hero">
-        <h1>Empowering COOs to Drive Financial Excellence</h1>
-        <p>FinCOO is the all-in-one SaaS platform designed for Chief Operating Officers in the fintech industry. Streamline operations, gain real-time insights, and accelerate growth with our secure, scalable, and intuitive solution.</p>
-        <a href="#signup" class="cta-btn">Start Your Free Trial</a>
-    </section>
-    <section class="features" id="features">
-        <div class="feature-card">
-            <h3>Real-Time Analytics</h3>
-            <p>Monitor KPIs and financial metrics with customizable dashboards and instant reporting.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Automated Workflows</h3>
-            <p>Reduce manual tasks and improve efficiency with intelligent automation tools.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Secure Integrations</h3>
-            <p>Connect seamlessly with your existing fintech stack using robust, secure APIs.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Compliance Management</h3>
-            <p>Stay ahead of regulations with built-in compliance tracking and audit trails.</p>
-        </div>
-    </section>
-    <section id="about" style="padding:3rem 1rem; background:#fff; text-align:center;">
-        <h2>About FinCOO</h2>
-        <p>FinCOO was built by fintech experts for COOs who demand operational excellence. Our mission is to simplify complex processes, empower data-driven decisions, and help your organization thrive in a fast-paced financial landscape.</p>
-    </section>
-    <section id="contact" style="padding:3rem 1rem; background:#f1f3f8; text-align:center;">
-        <h2>Contact Us</h2>
-        <p>Have questions or want a personalized demo? <br>Email us at <a href="mailto:info@fincoo.com">info@fincoo.com</a></p>
-    </section>
-    <footer>
-        &copy; 2024 FinCOO. All rights reserved.
-    </footer>
+    <h1>🔮 오늘의 운세</h1>
+    <input type="text" id="name" placeholder="이름" />
+    <input type="date" id="birthdate" />
+    <button onclick="getFortune()">운세 보기</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        async function getFortune() {
+            const name = document.getElementById('name').value;
+            const birthdate = document.getElementById('birthdate').value;
+            
+            const response = await fetch('http://127.0.0.1:8000/api/fortune', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name, birthdate})
+            });
+            
+            const data = await response.json();
+            document.getElementById('result').innerHTML = `
+                <div class="fortune-card">
+                    <h2>${data.name}님의 오늘 운세</h2>
+                    <p>💕 연애운: ${data.love}</p>
+                    <p>💼 직장운: ${data.career}</p>
+                    <p>🏃 건강운: ${data.health}</p>
+                    <p>🎲 행운의 숫자: ${data.lucky_number}</p>
+                </div>
+            `;
+        }
+    </script>
 </body>
 </html>
